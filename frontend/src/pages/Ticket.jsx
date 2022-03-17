@@ -3,12 +3,8 @@ import { toast } from 'react-toastify';
 import Modal from 'react-modal';
 import { FaPlus } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTicket, closeTicket, reset } from '../features/tickets/ticketSlice';
-import {
-  getNotes,
-  createNote,
-  reset as notesReset,
-} from '../features/notes/noteSlice';
+import { getTicket, closeTicket } from '../features/tickets/ticketSlice';
+import { getNotes, createNote } from '../features/notes/noteSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import NoteItem from '../components/NoteItem';
 import BackButton from '../components/BackButton';
@@ -33,7 +29,7 @@ function Ticket() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [noteText, setNoteText] = useState('');
 
-  const { ticket, isLoading, isSuccess, isError, message } = useSelector(
+  const { ticket, isLoading, isError, message } = useSelector(
     (state) => state.tickets
   );
 
@@ -41,7 +37,6 @@ function Ticket() {
     (state) => state.notes
   );
 
-  const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { ticketId } = useParams();
@@ -67,6 +62,7 @@ function Ticket() {
   const onNoteSubmit = (e) => {
     e.preventDefault();
     dispatch(createNote({ noteText, ticketId }));
+    setNoteText('');
     closeModal();
   };
 
